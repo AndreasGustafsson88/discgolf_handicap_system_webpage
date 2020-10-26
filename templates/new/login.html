@@ -1,0 +1,40 @@
+{% extends "new/logout_base.html" %}
+{% block section %}
+
+    <section class="page-section" id="login">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Login to get started</h2>
+                <h3 class="section-subheading text-muted">Calculate your rating and compete against anyone!</h3>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <h5 class="error">{{ messages }}</h5>
+                {% endif %}
+            {% endwith %}
+            <form id="loginForm" method="POST" action="#contact">
+                <div class="row align-content-center mb-5">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input class="form-control" name="email" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address." />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" name="password" id="password" type="password" placeholder="Your Password *" required="required" data-validation-required-message="Please enter your name." />
+                            <p class="help-block text-danger"></p>
+                            <label class="custom-checkbox">
+                                <input type="checkbox">
+                                Remember me
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div id="success"></div>
+                    <button class="btn btn-primary btn-xl text-uppercase" >Login</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

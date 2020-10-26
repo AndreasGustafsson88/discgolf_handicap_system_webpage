@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, flash, url_for, redirect
 import os
-from settings.functions import read_csv
+from settings.data_functions import read_csv
 
 UPLOAD_FOLDER = "C:\\Kod\\Projekt\\handikapp_webpage\\uploads"
 ALLOWED_FORMAT = (".csv",)
@@ -49,7 +49,7 @@ def get_file(username):
 
 @app.route('/courses')
 def courses():
-    return render_template("courses.html", courses=course)
+    return render_template("new/courses.html", courses=course)
 
 
 

@@ -1,0 +1,35 @@
+{% extends "new/login_base.html" %}
+
+{% block section %}
+    <section class="page-section" id="login">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Upload your Udisc scorecard</h2>
+                <h3 class="section-subheading text-muted">You must enter your exact Udisc username at the same time!</h3>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <h5 class="error">{{ messages }}</h5>
+                {% endif %}
+            {% endwith %}
+            <form id="loginForm" method="POST" action="#" enctype="multipart/form-data">
+
+                <div class="row align-content-center mb-5">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.hidden_tag() }}
+                            {{ form.file }}
+                            <input class="form-control" name="udisc" id="udisc" type="text" placeholder="Your Udisc Username *" required="required" data-validation-required-message="Please enter your email address." />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div id="success"></div>
+                    <button class="btn btn-primary btn-xl text-uppercase" >Upload</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

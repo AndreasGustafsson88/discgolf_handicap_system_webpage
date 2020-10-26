@@ -11,12 +11,13 @@ auth = Blueprint('auth', __name__)
 @auth.route("/")
 @auth.route("/home")
 def index():
-    return render_template("index.html")
+
+    return render_template("new/index.html")
 
 
 @auth.route("/signup")
 def signup():
-    return render_template("signup.html")
+    return render_template("new/signup.html")
 
 
 @auth.route("/signup", methods=["POST"])
@@ -35,16 +36,19 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
+    flash("Registration successful!")
+
     return redirect(url_for("auth.login"))
 
 
 @auth.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("new/login.html")
 
 
 @auth.route("/login", methods=["POST"])
 def login_post():
+
     email = request.form.get("email")
     password = request.form.get("password")
     remember = True if request.form.get("remember") else False
@@ -59,8 +63,8 @@ def login_post():
         flash("Password incorrect")
         return redirect(url_for("auth.login"))
 
-    login_user(user, remember=remember)
-    return redirect(url_for("main.profile"))
+    login_user(user)
+    return redirect(url_for("main.profile", remeber=remember))
 
 
 @auth.route("/about")

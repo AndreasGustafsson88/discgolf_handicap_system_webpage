@@ -1,0 +1,12 @@
+{% extends "new/logout_base.html" %}
+{% block title %} Discgolf Handicap System {% endblock %}
+{% block section %}
+    <header class="masthead">
+        <div class="container">
+            <div class="masthead-subheading">Welcome To Our Studio!</div>
+            <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="{{url_for("auth.login") }}">Login</a>
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href=" {{ url_for("auth.signup") }} ">or Signup!</a>
+        </div>
+    </header>
+{% endblock %}

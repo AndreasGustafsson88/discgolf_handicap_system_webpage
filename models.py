@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100))
     score_card = db.Column(db.String(200), default="none")
     udisc_name = db.Column(db.String(100), default="none")
+    player_rating = db.Column(db.Integer)
 
 
 class UploadForm(FlaskForm):

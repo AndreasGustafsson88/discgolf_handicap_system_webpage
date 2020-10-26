@@ -4,9 +4,6 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 
-
-
-
 app.config["SECRET_KEY"] = "supersecret, don't tell"
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db2.sqlite'
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
