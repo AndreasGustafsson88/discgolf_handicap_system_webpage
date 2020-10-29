@@ -7,16 +7,27 @@ DRIVER_PATH = "C:\\Program Files (x86)\\Webdrivers\\chromedriver.exe"
 PLAYER_PATH = "C:\\Kod\\Projekt\\Handicap system for Discgolf\\Player_data"
 
 
-def download(event_link, headless=True):
+def get_rating_from_text_element(pdga_rating):
+    return int(pdga_rating.text[16:19])
+
+
+def download(event_link, headless=True, pdga=False):
     options = Options()
     options.headless = headless
     options.add_argument("--window-size=2000,1200")
 
     driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
-    driver.get(event_link)
-    score = [score.get_property("innerHTML") for score in driver.find_elements_by_class_name('round')]
-    rating = [rating.get_property("innerHTML") for rating in driver.find_elements_by_class_name("player-rating")]
-    return score, rating
+
+    if not pdga:
+        driver.get(event_link)
+        score = [score.get_property("innerHTML") for score in driver.find_elements_by_class_name('round')]
+        rating = [rating.get_property("innerHTML") for rating in driver.find_elements_by_class_name("player-rating")]
+        return score, rating
+
+    else:
+        driver.get("https://www.pdga.com/player/" + event_link)
+        pdga_rating = driver.find_element_by_xpath('//*[@id="block-system-main"]/div/div/div/div/div/div[7]/div/ul/li[5]')
+        return get_rating_from_text_element(pdga_rating)
 
 
 def read_csv(name):

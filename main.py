@@ -5,10 +5,10 @@ from models import User
 import os
 from models import UploadForm
 from settings import *
+from settings.data_functions.get_ext_data import download
 from settings.functions import read_csv, list_courses, sort_rounds, calc_rating
 
 main = Blueprint("main", __name__)
-
 
 
 @main.context_processor
@@ -35,7 +35,7 @@ def stats():
                       f"username or that the scorecard was uploaded correct"
                 return render_template("new/stats.html", msg=msg)
             player_rating, rounds = calc_rating(player_score)
-            current_user.player_rating = player_rating
+            current_user.udisc_rating = player_rating
             db.session.commit()
 
             return render_template("new/stats.html", iterable=score, rating=player_rating, rounds=rounds)
@@ -68,6 +68,21 @@ def upload():
 
         return redirect(url_for("main.stats"))
 
+    if request.method == "POST":
+        if "pdga" in request.form:
+            pdga = str(request.form.get("pdga"))
+            current_user.pdga_rating = download(pdga, pdga=True)
+            db.session.commit()
+            flash(f"PDGA-rating {current_user.pdga_rating} saved!")
+            return redirect(request.url)
+
+        if "metrix" in request.form:
+            metrix = request.form.get("metrix")
+            current_user.metrix_rating = metrix
+            db.session.commit()
+            flash(f"Metrix-rating {current_user.metrix_rating} saved")
+            return redirect(request.url)
+
     return render_template("new/upload.html", form=form)
 
 
@@ -81,11 +96,14 @@ def courses():
 @main.route("/go_play", methods=["POST", "GET"])
 @login_required
 def go_play():
-    if request.method == "POST":
-        course = request.form.get("course")
-        holes, par, difference = main_db.get_throws(current_user.player_rating, course)
-        return render_template("new/go_play.html",  holes=holes, par=par, course=course, difference=difference)
-
+    try:
+        if request.method == "POST":
+            course = request.form.get("course")
+            holes, par, difference = main_db.get_throws(current_user.metrix_rating, course)
+            return render_template("new/go_play.html",  holes=holes, par=par, course=course, difference=difference)
+    except IndexError:
+        flash("You have not submittet a valid scorecard. Could not find any rating information about you!")
+        return redirect(url_for("main.go_play"))
     return render_template("new/go_play.html")
 
 
